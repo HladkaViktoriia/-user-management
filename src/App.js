@@ -1,25 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import Users from './components/users/Users';
+import FormUser from './components/formUser/FormUser';
+import {useDispatch, useSelector} from 'react-redux';
+import {stateFormUser} from './redux/action';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const {domReducer} = useSelector(state => state);
+    const dispatch = useDispatch();
+
+    const showForm = () => {
+        dispatch(stateFormUser('show'));
+    };
+
+    return (
+        <div className={'app'}>
+            <div className={'app__inner'}>
+                <div className={`message ${domReducer.message.class}`}>{domReducer.message.text}</div>
+                <button className={'btn-create'} onClick={showForm}>Create User</button>
+                <Users/>
+                <FormUser/>
+            </div>
+        </div>
+    );
 }
 
 export default App;

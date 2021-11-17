@@ -1,0 +1,19 @@
+.user__item {
+    padding: 26px 26px 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    background-color: #F4F5F8;
+    margin-bottom: 2px;
+    transition: all .2s;
+    cursor: pointer;
+    color: #3F4254;
+}
+.user__item:hover {
+    background-color: #EFF0F4;
+}
+.user__item > div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
