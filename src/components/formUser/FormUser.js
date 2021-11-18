@@ -73,7 +73,13 @@ export default function FormUser() {
     const handleSubmitDelete = (e) => {
         e.preventDefault();
 
+        dispatch(stateFormMessage({class: 'success', text: 'Success message'}));
+        dispatch(stateUser(userModel));
         deleteUsers(userForm._id);
+
+        setTimeout(() => {
+            dispatch(stateFormMessage({class: '', text: ''}));
+        }, 1500);
     };
 
     const isOptions = (type) => {
