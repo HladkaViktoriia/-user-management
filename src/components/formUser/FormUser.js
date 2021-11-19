@@ -1,7 +1,7 @@
 import Select from 'react-select';
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {stateFormMessage, stateFormUser, stateUser} from '../../redux/action';
+import {stateFormMessage, stateFormUser, stateInputError, stateUser} from '../../redux/action';
 
 import './FormUser.css';
 import {createUsers, deleteUsers, updateUsers} from '../../service/users.service';
@@ -12,14 +12,13 @@ export default function FormUser() {
     const dispatch = useDispatch();
     const {domReducer} = useSelector(state => state);
     const {user: userForm} = domReducer;
-    const [inputError, setInputError] = useState('');
     const nameTitle = {firstName: userForm.firstName};
 
     const hideForm = () => {
         dispatch(stateFormUser(''));
         dispatch(stateUser(userModel));
         dispatch(stateFormMessage({class: '', text: ''}));
-        setInputError('');
+        dispatch(stateInputError(''));
     };
 
     const onchange = (e) => {
@@ -32,7 +31,7 @@ export default function FormUser() {
             dispatch(stateUser({...userForm, [target.name]: target.value}));
         }
 
-        setInputError('');
+        dispatch(stateInputError(''));
         dispatch(stateFormMessage({class: '', text: ''}));
     };
 
@@ -41,7 +40,7 @@ export default function FormUser() {
         const isValidInput = validateKey(e.target);
 
         if (isValidInput) {
-            setInputError(isValidInput);
+            dispatch(stateInputError(isValidInput));
             dispatch(stateFormMessage({class: 'error', text: 'Error message'}));;
         } else {
             userForm._id ? updateUsers(userForm, userForm._id) : createUsers(userForm);
@@ -76,6 +75,7 @@ export default function FormUser() {
         dispatch(stateFormMessage({class: 'success', text: 'Success message'}));
         dispatch(stateUser(userModel));
         deleteUsers(userForm._id);
+        dispatch(stateInputError(''));
 
         setTimeout(() => {
             dispatch(stateFormMessage({class: '', text: ''}));
@@ -94,25 +94,25 @@ export default function FormUser() {
             </div>
 
             <form onSubmit={handleSubmitSave}>
-                <label className={inputError === 'userName' ? 'error' : ''}>
+                <label className={domReducer.inputError === 'userName' ? 'error' : ''}>
                     Username*
                     <input type="text" name={'userName'} onChange={onchange} value={userForm.userName || ''}/>
                     <span>Error message</span>
                 </label>
 
-                <label className={inputError === 'firstName' ? 'error' : ''}>
+                <label className={domReducer.inputError === 'firstName' ? 'error' : ''}>
                     First name*
                     <input type="text" name={'firstName'} onChange={onchange} value={userForm.firstName || ''}/>
                     <span>Error message</span>
                 </label>
 
-                <label className={inputError === 'lastName' ? 'error' : ''}>
+                <label className={domReducer.inputError === 'lastName' ? 'error' : ''}>
                     Last name*
                     <input type="text" name={'lastName'} onChange={onchange} value={userForm.lastName || ''}/>
                     <span>Error message</span>
                 </label>
 
-                <label className={inputError === 'email' ? 'error' : ''}>
+                <label className={domReducer.inputError === 'email' ? 'error' : ''}>
                     Email*
                     <input type="text" name={'email'} onChange={onchange} value={userForm.email || ''}/>
                     <span>Error message</span>
@@ -128,13 +128,13 @@ export default function FormUser() {
                         options={selectOptions}/>
                 </label>
 
-                <label className={inputError === 'password' ? 'error' : ''}>
+                <label className={domReducer.inputError === 'password' ? 'error' : ''}>
                     Password*
                     <input type="password" name={'password'} onChange={onchange} value={userForm.password || ''}/>
                     <span>Error message</span>
                 </label>
 
-                <label className={inputError === 'repeatPassword' ? 'error' : ''}>
+                <label className={domReducer.inputError === 'repeatPassword' ? 'error' : ''}>
                     Repeat password*
                     <input type="password" name={'repeatPassword'} onChange={onchange} value={userForm.repeatPassword || ''}/>
                     <span>Error message</span>

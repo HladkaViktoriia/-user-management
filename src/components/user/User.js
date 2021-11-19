@@ -1,11 +1,12 @@
 import './User.css';
 import {useDispatch} from 'react-redux';
-import {stateUser} from '../../redux/action';
+import {stateInputError, stateUser} from '../../redux/action';
 
 export default function User({user}) {
     const dispatch = useDispatch();
 
     let onClick = () => {
+        dispatch(stateInputError(''));
         dispatch(stateUser({...user, password: '', repeatPassword: ''}));
     }
 

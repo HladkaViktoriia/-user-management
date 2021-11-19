@@ -2,15 +2,17 @@ import {userModel} from '../../configs';
 import {
     FORM_USER,
     FORM_MESSAGE,
-    USER
+    USER, INPUT_ERROR
 } from "../action";
 
 let initialState = {
     formUser: '',
     message: {class: '', text: ''},
     user: userModel,
+    inputError: '',
 }
 export const domReducer = (state = initialState, action) => {
+    console.log(action.payload)
     switch (action.type) {
         case FORM_USER:
             return {...state, formUser: action.payload};
@@ -18,6 +20,8 @@ export const domReducer = (state = initialState, action) => {
             return {...state, message: {...action.payload}};
         case USER:
             return {...state, user: {...action.payload}};
+        case INPUT_ERROR:
+            return {...state, inputError: action.payload};
         default:
             return state;
     }
